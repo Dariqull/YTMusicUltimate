@@ -12,27 +12,27 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Set up repo
-      uses: actions/checkout@v2
+      - name: Set up repo
+        uses: actions/checkout@v2
 
-    - name: Download .ipa
-      run: |
-        curl -L "${{ github.event.inputs.ipa_url }}" -o app.ipa
-        mkdir Payload
-        unzip app.ipa -d Payload
+      - name: Download .ipa
+        run: |
+          curl -L "${{ github.event.inputs.ipa_url }}" -o app.ipa
+          mkdir Payload
+          unzip app.ipa -d Payload
 
-    - name: Inject tweak
-      run: |
-        echo "Injecting tweak into .ipa"
+      - name: Inject tweak
+        run: |
+          echo "Injecting tweak into .ipa"
 
-    - name: Zip final .ipa
-      run: |
-        zip -r YTMusicUltimate-Tweaked.ipa Payload/
+      - name: Zip final .ipa
+        run: |
+          zip -r YTMusicUltimate-Tweaked.ipa Payload/
 
-        - name: Release
-      uses: softprops/action-gh-release@v1
-      with:
-        tag_name: v1.0.0
-        files: YTMusicUltimate-Tweaked.ipa
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v1.0.0
+          files: YTMusicUltimate-Tweaked.ipa
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
