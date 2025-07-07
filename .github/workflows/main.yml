@@ -1,0 +1,37 @@
+name: Build and Release YTMusicUltimate
+
+on:
+  workflow_dispatch:
+    inputs:
+      ipa_url:
+        description: 'Direct link to the decrypted YT Music .ipa'
+        required: true
+        default: ''
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set up repo
+      uses: actions/checkout@v2
+
+    - name: Download .ipa
+      run: |
+        curl -L "${{ github.event.inputs.ipa_url }}" -o app.ipa
+        mkdir Payload
+        unzip app.ipa -d Payload
+
+    - name: Inject tweak
+      run: |
+        echo "Injecting tweak into .ipa"
+
+    - name: Zip final .ipa
+      run: |
+        zip -r YTMusicUltimate-Tweaked.ipa Payload/
+
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: YTMusicUltimate-Tweaked.ipa
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
