@@ -29,9 +29,10 @@ jobs:
       run: |
         zip -r YTMusicUltimate-Tweaked.ipa Payload/
 
-    - name: Release
+        - name: Release
       uses: softprops/action-gh-release@v1
       with:
+        tag_name: v1.0.0
         files: YTMusicUltimate-Tweaked.ipa
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
